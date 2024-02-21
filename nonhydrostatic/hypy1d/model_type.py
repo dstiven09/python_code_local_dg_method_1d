@@ -1,0 +1,7 @@
+import enum
+
+
+class ModelType(enum.Enum):
+    HYDROSTATIC = 0
+    NON_HYDROSTAIC_QUADRATIC_PRESSURE = 1.5
+    NON_HYDROSTAIC_LINEAR_PRESSURE = 2.0
