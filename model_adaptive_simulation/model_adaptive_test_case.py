@@ -82,7 +82,8 @@ class ModelAdaptiveTestCase:
         simulation_result = SimulationResult(grid.nodecoordinates,
                                              dg_element.elementdofs,
                                              dg_element.ddx, bathymetry,
-                                             self.model.still_water_depth)
+                                             self.model.still_water_depth,
+                                             projection_criterion.type)
         while t < self.model.t_max - np.finfo(float).resolution:
             if step_index == self.numerical_parameters.max_iterations:
                 break
