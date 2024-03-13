@@ -9,7 +9,7 @@ from visualization_settings import *
 class SimulationResult:
 
     def __init__(self, grid_x, element_indicies, element_derivative,
-                 bathymetry, still_water_depth) -> None:
+                 bathymetry, still_water_depth, projection_criterion_type) -> None:
         self.number_of_corrected_degress_of_freedom = 0
         self.q_in_time = []
         self.grid_x = grid_x
@@ -18,7 +18,8 @@ class SimulationResult:
         self.element_derivative = element_derivative
         self.still_water_depth = still_water_depth
         self.bathymetry = bathymetry
-        self.criteria = None
+        self.criteria = projection_criterion_type.value
+        self.runtime = 0
 
     def plot_water_hight_at_index(self, step_index: int):
         min_element = min(self.corrected_element_indicies[step_index])
@@ -291,7 +292,7 @@ class SimulationResult:
     def load(cls, input_file: str) -> SimulationResult:
         with open(input_file, 'rb') as f:
             obj = pickle.load(f)
-            obj.criteria = None
+            #obj.criteria = None
             return obj
 
     def get_number_of_time_steps(self):
