@@ -22,28 +22,30 @@ def simulation_run():
     #model = SmoothBathymetryModel()
     #numerical_parameters = SmoothBathymetryNumericalParameters()
 
-    # Setup the solver for the test case and select a projection criterion with a theshold
+    # Setup the solver for the test case and select a projection criterion with a threshold
     test_case = ModelAdaptiveTestCase(model, numerical_parameters)
-    criterion = ProjectionCriterion(ProjectionCriterionType.W_X_PROTECTED, 0.015)
+    criterion = ProjectionCriterion(ProjectionCriterionType.U_X_PROTECTED, 0.002)
 
     print(f'Starting criterion with {criterion.type}.')
     run_time = time.time()
     simulation_result = test_case.run(criterion)
-    print(type(simulation_result))
-    print(simulation_result)
     run_time = time.time() - run_time
     print(f'Time for one run: {run_time:.2f}s.')
 
-    simulation_result.save('results/beji_battjes_w_x.pkl')
+    simulation_result.runtime = run_time
+    #simulation_result.criteria = str(criterion.type)
+
+    simulation_result.save('results/beji_battjes_u_x_protected_new.pkl')
 
 
 def visualize_results():
-    simulation_result = SimulationResult.load('results/smooth_bathymetry_w_x_protected.pkl')
-    simulation_result.plot_criteria_norm()
-    for i in [0, 100, 200, 300]:
-        simulation_result.plot_water_hight_at_index(i)
+    simulation_result = SimulationResult.load('results/beji_battjes_u_x_protected_new.pkl')
+    #simulation_result.plot_criteria_norm()
+    for i in [0,100,223, 300, 399]:
+        #simulation_result.plot_water_hight_at_index(i)
+        simulation_result.plot_solution_at_index(i)
 
 
 if __name__ == "__main__":
-    #visualize_results()
-    simulation_run()
+    #simulation_run()
+    visualize_results()
