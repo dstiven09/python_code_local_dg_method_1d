@@ -22,14 +22,15 @@ class SimulationResult:
         self.runtime = 0
         self.time_step = time_step
 
-    def plot_error(self, to_compare_results: SimulationResult, step_index : int):
-        if self.time_step == to_compare_results.time_step and len(self.grid_x) == len(to_compare_results.grid_x):
+    def plot_error(self, compare_results_against: SimulationResult, step_index : int):
+        if self.time_step == compare_results_against.time_step and len(self.grid_x) == len(compare_results_against.grid_x):
             water_height = self.q_in_time[step_index][:, 0] + self.bathymetry
-            to_compare_water_height = to_compare_results.q_in_time[step_index][:, 0] + to_compare_results.bathymetry
+            to_compare_water_height = compare_results_against.q_in_time[step_index][:, 0] + compare_results_against.bathymetry
             error = abs(water_height - to_compare_water_height)
 
             fig, ax = plt.subplots()
-            fig.suptitle(f'{self.criteria.type} : {self.criteria.threshold} VS {to_compare_results.criteria.type} : {to_compare_results.criteria.threshold}')
+
+            fig.suptitle(f'{self.criteria.type} : {self.criteria.threshold} VS {compare_results_against.criteria.type} : {compare_results_against.criteria.threshold}')
             fig.text(0.5, 0.87, f'step index : {step_index}', ha='center', fontsize=10)
             plt.subplots_adjust(hspace=0.5, wspace=0.5, bottom=0.5)
 
@@ -64,7 +65,6 @@ class SimulationResult:
                         ax.plot(self.grid_x[i], water_height[self.element_indicies[i, 0]], 'b-', marker='o',
                                 markersize=3)
             ax.set_ylabel('$h+b$')
-            #ax.set_xlabel('X-axis')
             plt.tight_layout()
             plt.show()
         else:
