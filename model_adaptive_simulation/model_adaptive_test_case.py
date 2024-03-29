@@ -83,7 +83,8 @@ class ModelAdaptiveTestCase:
                                              dg_element.elementdofs,
                                              dg_element.ddx, bathymetry,
                                              self.model.still_water_depth,
-                                             projection_criterion.type)
+                                             projection_criterion,
+                                             time_step = self.numerical_parameters.dt)
         while t < self.model.t_max - np.finfo(float).resolution:
             if step_index == self.numerical_parameters.max_iterations:
                 break
