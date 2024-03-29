@@ -44,23 +44,23 @@ def simulation_run():
 
     #Asking whether the criterion is Global
     if criterion.type.value == 1:
-        filename = f'results/{model_name}_{criterion.type}_t={model.t_max}_dt={numerical_parameters.dt}_elements={numerical_parameters.number_of_elements}'
+        filename = f'results/{model_name}_{criterion.type}_t={model.t_max}_dt={numerical_parameters.dt}_elements={numerical_parameters.number_of_elements}.pkl'
     else:
-        filename = f'results/{model_name}_{criterion.type}_{criterion.threshold}_t={model.t_max}_dt={numerical_parameters.dt}_elements={numerical_parameters.number_of_elements}'
+        filename = f'results/{model_name}_{criterion.type}_{criterion.threshold}_t={model.t_max}_dt={numerical_parameters.dt}_elements={numerical_parameters.number_of_elements}.pkl'
 
 
     simulation_result.save(filename)
 
 
 def visualize_results():
-    simulation_result = SimulationResult.load('results/beji_battjes_global.pkl')
+    simulation_result = SimulationResult.load('results/beji_battjes_GLOBAL_t=50.0_dt=0.01_elements=400.pkl')
     #simulation_result.plot_criteria_norm()
-    for i in range(0, len(simulation_result.q_in_time), int(len(simulation_result.q_in_time)/8)-1):
+    for i in range(0, len(simulation_result.q_in_time), int(len(simulation_result.q_in_time)/10)-1):
         simulation_result.plot_water_hight_at_index(i)
         #simulation_result.plot_solution_at_index(i)
 
 
 
 if __name__ == "__main__":
-    simulation_run()
+    #simulation_run()
     visualize_results()
