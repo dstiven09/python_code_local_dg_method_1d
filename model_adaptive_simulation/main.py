@@ -24,7 +24,7 @@ def simulation_run():
 
     # Setup the solver for the test case and select a projection criterion with a threshold
     test_case = ModelAdaptiveTestCase(model, numerical_parameters)
-    criterion = ProjectionCriterion(ProjectionCriterionType.U_X_PROTECTED, 0.002)
+    criterion = ProjectionCriterion(ProjectionCriterionType.GLOBAL)#, 0.0005)
 
     print(f'Starting criterion with {criterion.type}.')
     run_time = time.time()
@@ -33,19 +33,34 @@ def simulation_run():
     print(f'Time for one run: {run_time:.2f}s.')
 
     simulation_result.runtime = run_time
-    #simulation_result.criteria = str(criterion.type)
 
-    simulation_result.save('results/beji_battjes_u_x_protected_new.pkl')
+    #naming results - regularization
+    if isinstance(model, BejiBattjesModel):
+        model_name = 'beji_battjes'
+    elif isinstance(model, SolitaryWaveModel):
+        model_name = 'solitary_wave'
+    elif isinstance(model, SmoothBathymetryModel):
+        model_name = 'smooth_bathymetry'
+
+    #Asking whether the criterion is Global
+    if criterion.type.value == 1:
+        filename = f'results/{model_name}_{criterion.type}_t={model.t_max}_dt={numerical_parameters.dt}_elements={numerical_parameters.number_of_elements}'
+    else:
+        filename = f'results/{model_name}_{criterion.type}_{criterion.threshold}_t={model.t_max}_dt={numerical_parameters.dt}_elements={numerical_parameters.number_of_elements}'
+
+
+    simulation_result.save(filename)
 
 
 def visualize_results():
-    simulation_result = SimulationResult.load('results/beji_battjes_u_x_protected_new.pkl')
+    simulation_result = SimulationResult.load('results/beji_battjes_global.pkl')
     #simulation_result.plot_criteria_norm()
-    for i in [0,100,223, 300, 399]:
-        #simulation_result.plot_water_hight_at_index(i)
-        simulation_result.plot_solution_at_index(i)
+    for i in range(0, len(simulation_result.q_in_time), int(len(simulation_result.q_in_time)/8)-1):
+        simulation_result.plot_water_hight_at_index(i)
+        #simulation_result.plot_solution_at_index(i)
+
 
 
 if __name__ == "__main__":
-    #simulation_run()
+    simulation_run()
     visualize_results()
