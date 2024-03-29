@@ -30,7 +30,7 @@ class ProjectionCriterionType(Enum):
 class ProjectionCriterion:
 
     def __init__(self, type: ProjectionCriterionType,
-                 threshold: float) -> None:
+                 threshold: float = 0.0) -> None:
         self.type = type
         self.threshold = threshold
 
