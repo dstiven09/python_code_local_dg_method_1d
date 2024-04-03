@@ -26,7 +26,7 @@ def simulation_run():
 
     # Setup the solver for the test case and select a projection criterion with a threshold
     test_case = ModelAdaptiveTestCase(model, numerical_parameters)
-    criterion = ProjectionCriterion(ProjectionCriterionType.W_X_PROTECTED, 0.0001)
+    criterion = ProjectionCriterion(ProjectionCriterionType.U_X_PROTECTED, 0.00015)
 
     print(f'Starting criterion with {criterion.type}.')
     run_time = time.time()
@@ -58,7 +58,7 @@ def visualize_results(pickle_file_path, amount_graphs:int = 5):
     simulation_result = SimulationResult.load(pickle_file_path)
     #simulation_result.plot_criteria_norm()
     for i in range(0, len(simulation_result.q_in_time), int(len(simulation_result.q_in_time)/amount_graphs)-1):
-        #simulation_result.plot_water_hight_at_index(i, save_data=True, savedata_path= '../../Master_Thesis/Reports/images')
+        #simulation_result.plot_water_hight_at_index(i, save_data=True, savedata_path= '../images')
         simulation_result.plot_water_hight_at_index(i)
 
 def gif_visualization(pickle_file_path):
@@ -89,5 +89,5 @@ def gif_visualization(pickle_file_path):
 
 if __name__ == "__main__":
     #simulation_run()
-    visualize_results('results/solitary_wave_W_X_PROTECTED_0.001_t=100.0_dt=0.05_elements=400.pkl')  #('results/beji_battjes_W_X_PROTECTED_0.0005_t=50.0_dt=0.01_elements=400.pkl')
-    #gif_visualization('results/solitary_wave_W_X_PROTECTED_0.001_t=100.0_dt=0.05_elements=400.pkl')
+    #visualize_results('results/solitary_wave_U_X_PROTECTED_0.00015_t=50.0_dt=0.05_elements=400.pkl')  #('results/beji_battjes_W_X_PROTECTED_0.0005_t=50.0_dt=0.01_elements=400.pkl')
+    gif_visualization('results/solitary_wave_GLOBAL_t=50.0_dt=0.05_elements=400.pkl')
