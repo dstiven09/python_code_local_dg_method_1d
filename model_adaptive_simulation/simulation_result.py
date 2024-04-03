@@ -41,54 +41,41 @@ class SimulationResult:
             plt.tight_layout()
             plt.show()
 
-    def plot_water_hight_at_index(self, step_index: int, centralized=False):
-        if len(self.corrected_element_indicies[step_index]) > 0 and centralized:
-            min_element = min(self.corrected_element_indicies[step_index])
-            max_element = max(self.corrected_element_indicies[step_index])
-            min_plot_element = np.where(self.element_indicies[:, :] == min_element)[0][0]
-            max_plot_element = np.where(self.element_indicies[:, :] == max_element)[0][0]
-            element_range = max_plot_element - min_plot_element
-            i_min = min_plot_element - int(element_range) * 0.2
-            i_max = max_plot_element + int(element_range) * 0.2
-            water_height = self.q_in_time[step_index][:, 0] + self.bathymetry
-            fig, ax = plt.subplots()
-            fig.suptitle(f'{self.criteria.type} : {self.criteria.threshold}')
-            fig.text(0.5, 0.9, f'step index : {step_index}', ha='center', fontsize=10)
-            #plt.subplots_adjust(hspace=0.5, wspace=0.5, bottom=0.5)
-            for i in range(len(self.element_indicies)):
-                if i_min <= i <= i_max:
-                    if any(self.element_indicies[i, 0] ==
-                           self.corrected_element_indicies[step_index]):
-                        ax.plot(self.grid_x[i], water_height[self.element_indicies[i, 0]], 'r-', marker='o',
-                                markersize=3)
-                    else:
-                        ax.plot(self.grid_x[i], water_height[self.element_indicies[i, 0]], 'b-', marker='o',
-                                markersize=3)
-            ax.set_ylabel('$h+b$')
-            plt.tight_layout()
-            plt.show()
-        else:
-            water_height = self.q_in_time[step_index][:, 0] + self.bathymetry
-            fig, ax = plt.subplots(figsize=(10, 6))
-            fig.suptitle(f'{self.criteria.type} : {self.criteria.threshold}')
-            fig.text(0.5, 0.87, f'step index : {step_index}', ha='center', fontsize=10)
-            plt.subplots_adjust(hspace=0.5, wspace=0.5, bottom=0.5)
-            for i in range(len(self.element_indicies)):
-                if any(self.element_indicies[i, 0] ==
-                       self.corrected_element_indicies[step_index]):
-                    ax.plot(self.grid_x[i],
-                                   water_height[self.element_indicies[i, 0]], 'r-', marker='o', markersize=3)
-                else:
-                    ax.plot(self.grid_x[i],
-                                   water_height[self.element_indicies[i, 0]], 'b-', marker='o', markersize=3)
+    def plot_water_hight_at_index(self, step_index: int, save_data=False, savedata_path=None):
+        water_height = self.q_in_time[step_index][:, 0] + self.bathymetry
+        fig, ax = plt.subplots(figsize=(10, 6))
+        fig.suptitle(f'{self.criteria.type} : {self.criteria.threshold}')
+        fig.text(0.5, 0.87, f'step index : {step_index}', ha='center', fontsize=10)
+        plt.subplots_adjust(hspace=0.5, wspace=0.5, bottom=0.5)
+        for i in range(len(self.element_indicies)):
+            if any(self.element_indicies[i, 0] ==
+                   self.corrected_element_indicies[step_index]):
+                ax.plot(self.grid_x[i],
+                               water_height[self.element_indicies[i, 0]], 'r-', marker='o', markersize=3)
                 if i > 0:
                     ax.plot([self.grid_x[i - 1], self.grid_x[i]],
-                            [water_height[self.element_indicies[i - 1, 0]], water_height[self.element_indicies[i, 0]]],
-                            color='gray', linestyle='-', linewidth=1)
+                            [water_height[self.element_indicies[i - 1, 0]],
+                             water_height[self.element_indicies[i, 0]]],
+                             color='red', linestyle='-', linewidth=1)
+            else:
+                ax.plot(self.grid_x[i],water_height[self.element_indicies[i, 0]], 'b-', marker='o', markersize=3)
+                if i > 0:
+                    ax.plot([self.grid_x[i - 1], self.grid_x[i]],
+                            [water_height[self.element_indicies[i - 1, 0]],
+                             water_height[self.element_indicies[i, 0]]],
+                             color='blue', linestyle='-', linewidth=1)
 
-            ax.set_ylabel('$h+b$')
-            plt.tight_layout()
+        #ax.set_ylim([0.36, 0.44])
+        ax.set_ylim([9.7, 11.3])
+        ax.set_ylabel('$h+b$')
+        plt.tight_layout()
+        if save_data:
+            plt.savefig(f'{savedata_path}/step_{step_index:04d}.png')
+            plt.close(fig)
+        else:
             plt.show()
+
+
 
 
     def plot_solution_at_index(self, step_index: int):
