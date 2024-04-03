@@ -28,7 +28,7 @@ class SolitaryWaveModel(Model):
         # Parameters for the boundary condition
         self.a = 0.01
         self.T = 2.02
-        self.t_max = 20.0
+        self.t_max = 100.0
 
         self.x_min = 0.0  # position of left boundary
         self.x_max = 3200.0  # position of right boundary
