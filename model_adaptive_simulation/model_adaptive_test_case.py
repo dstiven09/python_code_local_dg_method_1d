@@ -94,6 +94,10 @@ class ModelAdaptiveTestCase:
                           ) * self.numerical_parameters.dt / np.min(
                               grid.elementwidth)
 
+            if CFLg > 1/3:
+                print('CFLg: ', CFLg, 'time step: ', step_index)
+                quit()
+
             next_q, q_help_local = runge_kutta.step(
                 current_q, previous_q, t, self.numerical_parameters.dt)
 
