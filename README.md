@@ -101,11 +101,6 @@ This set-up has been tested for Python 3.8 and Python 3.9.
 
 First clone the repository and move into the directory:
 
-```
-git clone git@github.com:jonathan-hellwig/scientific_computing_project.git
-cd scientific_computing_project
-```
-
 Then create a new virtual python environment to handle the dependencies.
 
 ```
