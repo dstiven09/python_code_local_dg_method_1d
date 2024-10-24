@@ -59,7 +59,7 @@ def visualize_results(pickle_file_path, amount_graphs:int = 5):
     #simulation_result.plot_criteria_norm()
     for i in range(0, len(simulation_result.q_in_time), int(len(simulation_result.q_in_time)/amount_graphs)-1):
         #simulation_result.plot_water_hight_at_index(i, save_data=True, savedata_path= '../images')
-        simulation_result.plot_water_hight_at_index(i)
+        simulation_result.plot_water_height_at_index(i)
 
 def gif_visualization(pickle_file_path):
     run_time = time.time()
@@ -74,7 +74,7 @@ def gif_visualization(pickle_file_path):
     args_list = [(i, True, path_name) for i in range(len(simulation_result.q_in_time))]
 
     with Pool() as pool:
-        pool.starmap(simulation_result.plot_water_hight_at_index, args_list)
+        pool.starmap(simulation_result.plot_water_height_at_index, args_list)
 
     filenames = [f'{path_name}/step_{i:04d}.png' for i in range(1, len(simulation_result.q_in_time))]
 
